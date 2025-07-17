@@ -9,5 +9,3 @@ def process_packet(packet):
         s.sendto(domain.encode(),("127.0.0.1",8989))
 # Start sniffing (use iface="your_adapter" on Linux)
 sniff(filter="udp port 53", prn=process_packet, store=False)
-
-#run sudo ~/Desktop/projs/projs/.venv/bin/python DNS_SENDER.py 
