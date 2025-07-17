@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Mouse and Keyboard Tracker</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: sans-serif;
+            text-align: center;
+        }
+        
+        img {
+            max-width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Tracking Input</h1>
+    <img src="/upload" alt="Uploaded Image" id="tracked-image">
+
+    <script>
+        // Send key presses to /key
+        function sendkey(a, b) {
+            fetch('/key', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    f: a,
+                    r: b
+                })
+            }).catch(console.error);
+        }
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === "w") {
+                sendkey(1, 0);
+            } else if (event.key === "s") {
+                sendkey(-1, 0);
+            } else if (event.key === "a") {
+                sendkey(0, -1);
+            } else if (event.key === "d") {
+                sendkey(0, 1);
+            }
+        });
+
+        let px = null,
+            py = null;
+
+        document.addEventListener('mousemove', (event) => {
+            if (px === null || py === null) {
+                px = event.clientX;
+                py = event.clientY;
+                return;
+            }
+
+            const cx = event.clientX;
+            const cy = event.clientY;
+
+            fetch('/mouse', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    x: cx - px,
+                    y: cy - py
+                })
+            }).catch(console.error);
+
+            px = cx;
+            py = cy;
+        });
+    </script>
+
+
+</body>
+
+</html>
