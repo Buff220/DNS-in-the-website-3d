@@ -27,7 +27,7 @@ DNS_POS = [np.array([random.random()*DISTANCE, random.random()*DISTANCE, random.
 def sniffer():
     global MAX_DNS
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    s.bind(("0.0.0.0", 8989))
+    s.bind(("127.0.0.1", 8989))
     while True:
         data, addr = s.recvfrom(1024)
         DNS.append(data.decode())
